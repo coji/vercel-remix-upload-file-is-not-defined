@@ -16,7 +16,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   );
   const file = schema.safeParse(formData.get("file"));
   if (!file.success) {
-    return json({ errors: file.error });
+    return json({ errors: file.error, node_version: process.version });
   }
 
   return json({
@@ -27,6 +27,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       size: file.data.size,
       type: file.data.type,
     },
+    node_version: process.version,
   });
 };
 

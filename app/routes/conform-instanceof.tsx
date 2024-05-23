@@ -17,7 +17,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   );
   const submission = parseWithZod(formData, { schema });
   if (submission.status !== "success") {
-    return json({ lastResult: submission.reply() });
+    return json({
+      lastResult: submission.reply(),
+      node_version: process.version,
+    });
   }
 
   return json({
@@ -27,6 +30,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       size: submission.value.file.size,
       type: submission.value.file.type,
     },
+    node_version: process.version,
   });
 };
 

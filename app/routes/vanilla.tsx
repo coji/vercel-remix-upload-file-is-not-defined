@@ -23,6 +23,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           type: file.type,
         }
       : null,
+    node_version: process.version,
   });
 };
 

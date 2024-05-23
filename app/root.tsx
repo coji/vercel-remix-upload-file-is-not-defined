@@ -39,6 +39,9 @@ export default function App() {
           <NavLink to="/conform-instanceof-simple">
             conform instanceof simple
           </NavLink>
+          <NavLink to="/conform-instanceof-simple-use-form">
+            conform instanceof useForm
+          </NavLink>
         </nav>
       </header>
       <main>

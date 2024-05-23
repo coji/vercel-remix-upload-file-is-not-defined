@@ -8,7 +8,9 @@ import {
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod";
 
-const schema = z.object({ file: z.custom<File>() });
+const schema = z.object({
+  file: z.custom<File>((file) => file instanceof File),
+});
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await unstable_parseMultipartFormData(
@@ -34,6 +36,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           }
         : null,
     error: submission.status === "error" ? submission.error : null,
+    node_version: process.version,
   });
 };
 
