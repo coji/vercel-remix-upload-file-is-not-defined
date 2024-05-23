@@ -1,10 +1,12 @@
 import {
   Links,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import "./styles.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,5 +27,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <header>
+        <nav>
+          <NavLink to="/vanilla">vanilla</NavLink>
+          <NavLink to="/zod-instanceof">zod instanceof</NavLink>
+          <NavLink to="/zod-custom">zod custom</NavLink>
+          <NavLink to="/conform-instanceof">conform instanceof</NavLink>
+          <NavLink to="/conform-custom">conform custom</NavLink>
+          <NavLink to="/conform-instanceof-simple">
+            conform instanceof simple
+          </NavLink>
+        </nav>
+      </header>
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
 }

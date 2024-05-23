@@ -1,0 +1,17 @@
+nav {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+a {
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+a.active {
+  background-color: #808080;
+  color: white;
+}

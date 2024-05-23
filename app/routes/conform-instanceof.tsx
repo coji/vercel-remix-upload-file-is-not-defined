@@ -4,32 +4,36 @@ import {
   json,
   unstable_parseMultipartFormData,
   type ActionFunctionArgs,
-  type MetaFunction,
 } from "@vercel/remix";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
+import { z } from "zod";
+import { parseWithZod } from "@conform-to/zod";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await unstable_parseMultipartFormData(
     request,
     unstable_createMemoryUploadHandler()
   );
-  const file = formData.get("file") as File;
-  const isFile = file instanceof File;
+  const submission = parseWithZod(formData, {
+    schema: z.object({ file: z.instanceof(File) }),
+  });
 
   return json({
-    message: "File uploaded successfuly.",
-    isFile,
-    file: {
-      name: file.name,
-      size: file.size,
-      type: file.type,
-    },
+    message: `File uploaded ${
+      submission.status === "success" ? "successfully" : "unsuccessfully"
+    }.`,
+    isFile:
+      submission.status === "success"
+        ? submission.value.file instanceof File
+        : false,
+    file:
+      submission.status === "success"
+        ? {
+            name: submission.value.file.name,
+            size: submission.value.file.size,
+            type: submission.value.file.type,
+          }
+        : null,
+    error: submission.status === "error" ? submission.error : null,
   });
 };
 
@@ -38,9 +42,9 @@ export default function Index() {
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>vercel/remix file upload test.</h1>
+      <h1>conform instanceof File</h1>
 
-      <form action="/?index" method="post" encType="multipart/form-data">
+      <form method="post" encType="multipart/form-data">
         <input type="file" name="file" />
         <button type="submit">Submit</button>
       </form>
