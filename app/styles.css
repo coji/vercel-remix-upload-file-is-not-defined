@@ -15,3 +15,12 @@ a.active {
   background-color: #808080;
   color: white;
 }
+
+input[aria-invalid="true"] {
+  border: 1px solid red;
+}
+
+div.error {
+  color: red;
+  font-size: 0.8rem;
+}

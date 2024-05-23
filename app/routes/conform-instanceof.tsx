@@ -8,32 +8,25 @@ import {
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod";
 
+const schema = z.object({ file: z.instanceof(File) });
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await unstable_parseMultipartFormData(
     request,
     unstable_createMemoryUploadHandler()
   );
-  const submission = parseWithZod(formData, {
-    schema: z.object({ file: z.instanceof(File) }),
-  });
+  const submission = parseWithZod(formData, { schema });
+  if (submission.status !== "success") {
+    return json({ lastResult: submission.reply() });
+  }
 
   return json({
-    message: `File uploaded ${
-      submission.status === "success" ? "successfully" : "unsuccessfully"
-    }.`,
-    isFile:
-      submission.status === "success"
-        ? submission.value.file instanceof File
-        : false,
-    file:
-      submission.status === "success"
-        ? {
-            name: submission.value.file.name,
-            size: submission.value.file.size,
-            type: submission.value.file.type,
-          }
-        : null,
-    error: submission.status === "error" ? submission.error : null,
+    message: "File uploaded successfully",
+    file: {
+      name: submission.value.file.name,
+      size: submission.value.file.size,
+      type: submission.value.file.type,
+    },
   });
 };
 

@@ -7,26 +7,26 @@ import {
 } from "@vercel/remix";
 import { z } from "zod";
 
+const schema = z.custom<File>();
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await unstable_parseMultipartFormData(
     request,
     unstable_createMemoryUploadHandler()
   );
-  const file = z.custom<File>().safeParse(formData.get("file"));
+  const file = schema.safeParse(formData.get("file"));
+  if (!file.success) {
+    return json({ errors: file.error });
+  }
 
   return json({
-    message: `File uploaded ${
-      file.success ? "successfully" : "unsuccessfully"
-    }.`,
-    isFile: file.success,
-    file: file.success
-      ? {
-          name: file.data.name,
-          size: file.data.size,
-          type: file.data.type,
-        }
-      : null,
-    error: file.error?.message,
+    message: "File uploaded successfully",
+    isFile: file.data instanceof File,
+    file: {
+      name: file.data.name,
+      size: file.data.size,
+      type: file.data.type,
+    },
   });
 };
 

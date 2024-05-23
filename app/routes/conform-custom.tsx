@@ -8,14 +8,14 @@ import {
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod";
 
+const schema = z.object({ file: z.custom<File>() });
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await unstable_parseMultipartFormData(
     request,
     unstable_createMemoryUploadHandler()
   );
-  const submission = parseWithZod(formData, {
-    schema: z.object({ file: z.custom<File>() }),
-  });
+  const submission = parseWithZod(formData, { schema });
 
   return json({
     message: `File uploaded ${
