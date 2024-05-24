@@ -1,10 +1,5 @@
-import { unstable_createMemoryUploadHandler } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
-import {
-  json,
-  unstable_parseMultipartFormData,
-  type ActionFunctionArgs,
-} from "@vercel/remix";
+import { json, type ActionFunctionArgs } from "@vercel/remix";
 import { z } from "zod";
 import { parseWithZod } from "@conform-to/zod";
 
@@ -13,10 +8,7 @@ const schema = z.object({
 });
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await unstable_parseMultipartFormData(
-    request,
-    unstable_createMemoryUploadHandler()
-  );
+  const formData = await request.formData();
   const submission = parseWithZod(formData, { schema });
 
   return json({

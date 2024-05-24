@@ -35,13 +35,10 @@ export default function App() {
           <NavLink to="/zod-instanceof">zod instanceof</NavLink>
           <NavLink to="/zod-custom">zod custom</NavLink>
           <NavLink to="/conform-instanceof">conform instanceof</NavLink>
-          <NavLink to="/conform-custom">conform custom</NavLink>
-          <NavLink to="/conform-instanceof-simple">
-            conform instanceof simple
-          </NavLink>
-          <NavLink to="/conform-instanceof-simple-use-form">
+          <NavLink to="/conform-instanceof-use-form">
             conform instanceof useForm
           </NavLink>
+          <NavLink to="/conform-custom">conform custom</NavLink>
         </nav>
       </header>
       <main>
